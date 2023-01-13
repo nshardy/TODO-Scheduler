@@ -1,0 +1,17 @@
+html {
+    font-family: 'Jetbrains Mono';
+}
+
+.welcomeMessage {
+    margin: auto;
+    width: 50%;
+    text-align: center;
+}
+
+.titleBar {
+    height: 36px;
+    margin: -7px;
+
+    text-align: center;
+    -webkit-app-region: drag;
+}
