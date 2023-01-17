@@ -2,47 +2,34 @@
 
 <!DOCTYPE html>
 <html lang="en">
+    <!-- Theme Controller -->
+    <script src="../plugins/themes/controller/theme.js" defer></script>
+    
+    <!-- Stylesheets -->
     <link rel="stylesheet" href="../plugins/themes/default/global.css">
     <link rel="stylesheet" href="../plugins/themes/default/darkmode.css" id="themeStylesheetLink" >
     
+    <!-- HTML -->
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Welcome!</title>
     </head>
-    <div class="titleBar"></div>
+
+    <div class="titleBar">
+        <div class="theme">
+            Theme:
+            <select id="themeDropdown">
+                <option value="lightmode" >Light</option>
+                <option value="SEPARATOR" >&#9473;&#9473;&#9473;&#9473;&#9473;&#9473;</option>
+                <option value="darkmode"  >Dark</option>
+                <option value="darkermode">Darker</option>
+            </select>
+        </div>
+    </div>
+
     <div class="welcomeMessage">
         <h1>Hello!</h1>
     </div>
-
-
-    Theme:
-    <select id="themeDropdown">
-        <option value="lightmode">Light</option>
-        <option value="darkmode">Dark</option>
-        <option value="darkermode">Darker</option>
-    </select>
     
-    <!-- for theme selection -->
-    <script>
-        function initThemeSelector() {
-            const themeSelect = document.getElementById('themeDropdown');
-            const themeStylesheet = document.getElementById('themeStylesheetLink');
-            const currentTheme = localStorage.getItem('theme') || 'lightmode';
-
-            function activateTheme(themeName) {
-                themeStylesheet.setAttribute('href', `../plugins/themes/default/${themeName}.css`);
-            }
-
-            themeSelect.addEventListener('change', () => {
-                activateTheme(themeSelect.value);
-                localStorage.setItem('theme', themeSelect.value);
-            });
-
-            themeSelect.value = currentTheme;
-            activateTheme(currentTheme);
-        }
-
-        initThemeSelector();
-    </script>
 </html>

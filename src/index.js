@@ -1,68 +1,59 @@
 // index.js
 
 // constants
-const {app, BrowserWindow, Menu} = require('electron');
-const path = require("path");
-const Store = require('electron-store')
-const store = new Store({
-    name: 'user-settings',
-    defaults: {
-        theme: 'Light'
-    }
-});
+const { app, BrowserWindow, Menu } = require('electron')
 
 // create a window
 const createWindow = () => {
-    const win = new BrowserWindow({
-        width: 800,
-        height: 600,
-        titleBarStyle: 'hiddenInset',
-        title: 'TODO Scheduler',
-        webPreferences: {
-            preload: path.join(__dirname, 'preload.js'),
-            nodeIntegration: true
-        }
-    });
+  const win = new BrowserWindow({
+    width: 800,
+    height: 600,
+    titleBarStyle: 'hiddenInset',
+    title: 'TODO Scheduler',
+    webPreferences: {
+      nodeIntegration: true
+    }
+  })
 
-    win.loadFile('src/index.html');
-    if(process.env.NODE_ENV === 'developer')
-        win.webContents.openDevTools();
+  win.loadFile('src/index.html')
+  if (process.env.NODE_ENV === 'developer') { win.webContents.openDevTools() }
 }
 
 // when the app is ready and loaded
-app.whenReady().then(() => { 
-    createWindow()
+app.whenReady().then(() => {
+  createWindow()
 
-    app.on('activate', () => {
-        if (BrowserWindow.getAllWindows().length === 0) createWindow()
-    })
- });
+  app.on('activate', () => {
+    if (BrowserWindow.getAllWindows().length === 0) createWindow()
+  })
+})
 
 // when all windows are closed
 app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') app.quit();
+  if (process.platform !== 'darwin') app.quit()
 })
-
 
 // app menu
 const isMac = process.platform === 'darwin'
 const isDevEnv = process.env.NODE_ENV === 'developer'
 const template = [
   // { role: 'appMenu' }
-  ...(isMac ? [{
-    label: app.name,
-    submenu: [
-      { role: 'about' },
-      { type: 'separator' },
-      { role: 'services' },
-      { type: 'separator' },
-      { role: 'hide' },
-      { role: 'hideOthers' },
-      { role: 'unhide' },
-      { type: 'separator' },
-      { role: 'quit' }
-    ]
-  }] : []),
+  ...(isMac
+    ? [{
+        label: app.name,
+        submenu: [
+          { role: 'about' },
+          { type: 'separator' },
+          { role: 'services' },
+          { type: 'separator' },
+          { role: 'hide' },
+          { role: 'hideOthers' },
+          { role: 'unhide' },
+          { type: 'separator' },
+          { role: 'quit' }
+        ]
+      }]
+    : []),
   // { role: 'fileMenu' }
   {
     label: 'File',
@@ -80,23 +71,25 @@ const template = [
       { role: 'cut' },
       { role: 'copy' },
       { role: 'paste' },
-      ...(isMac ? [
-        { role: 'pasteAndMatchStyle' },
-        { role: 'delete' },
-        { role: 'selectAll' },
-        { type: 'separator' },
-        {
-          label: 'Speech',
-          submenu: [
-            { role: 'startSpeaking' },
-            { role: 'stopSpeaking' }
+      ...(isMac
+        ? [
+            { role: 'pasteAndMatchStyle' },
+            { role: 'delete' },
+            { role: 'selectAll' },
+            { type: 'separator' },
+            {
+              label: 'Speech',
+              submenu: [
+                { role: 'startSpeaking' },
+                { role: 'stopSpeaking' }
+              ]
+            }
           ]
-        }
-      ] : [
-        { role: 'delete' },
-        { type: 'separator' },
-        { role: 'selectAll' }
-      ])
+        : [
+            { role: 'delete' },
+            { type: 'separator' },
+            { role: 'selectAll' }
+          ])
     ]
   },
   // { role: 'viewMenu' }
@@ -105,10 +98,12 @@ const template = [
     submenu: [
       { role: 'reload' },
       { role: 'forceReload' },
-        ...(isDevEnv? [ { role: 'toggleDevTools'}
-    ] : [
+      ...(isDevEnv
+        ? [{ role: 'toggleDevTools' }
+          ]
+        : [
 
-    ]),
+          ]),
       { type: 'separator' },
       { role: 'resetZoom' },
       { role: 'zoomIn' },
@@ -123,14 +118,16 @@ const template = [
     submenu: [
       { role: 'minimize' },
       { role: 'zoom' },
-      ...(isMac ? [
-        { type: 'separator' },
-        { role: 'front' },
-        { type: 'separator' },
-        { role: 'window' }
-      ] : [
-        { role: 'close' }
-      ])
+      ...(isMac
+        ? [
+            { type: 'separator' },
+            { role: 'front' },
+            { type: 'separator' },
+            { role: 'window' }
+          ]
+        : [
+            { role: 'close' }
+          ])
     ]
   },
   {
